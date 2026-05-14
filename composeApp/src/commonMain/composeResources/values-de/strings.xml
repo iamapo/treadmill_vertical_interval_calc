@@ -52,4 +52,10 @@
     <string name="progress_remaining_elevation">Verbleibende Höhenmeter</string>
 
     <string name="segment_total">gesamt</string>
+    <string name="segment_warmup">Warm-up</string>
+    <string name="segment_warmup_climb">Warm-up-Anstieg</string>
+    <string name="segment_hard_interval">Hartes Intervall %1$d</string>
+    <string name="segment_recovery">Erholung %1$d</string>
+    <string name="segment_steady_climb_adjustment">Anpassungsanstieg</string>
+    <string name="segment_cooldown">Cool-down</string>
 </resources>

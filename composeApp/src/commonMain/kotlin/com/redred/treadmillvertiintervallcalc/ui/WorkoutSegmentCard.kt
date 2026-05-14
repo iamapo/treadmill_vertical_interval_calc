@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.redred.treadmillvertiintervallcalc.model.SegmentType
 import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
 import org.jetbrains.compose.resources.stringResource
 import vertirun.composeapp.generated.resources.*
@@ -66,7 +67,7 @@ fun WorkoutSegmentCard(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text(
-                    text = "$startMinute-$endMinute min | ${segment.title}",
+                    text = "$startMinute-$endMinute min | ${localizedSegmentTitle(segment)}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -82,6 +83,31 @@ fun WorkoutSegmentCard(
         }
     }
 }
+
+@Composable
+private fun localizedSegmentTitle(segment: WorkoutSegment): String =
+    when (segment.type) {
+        SegmentType.WARMUP -> stringResource(Res.string.segment_warmup)
+        SegmentType.HARD_INTERVAL -> stringResource(
+            Res.string.segment_hard_interval,
+            segment.title.trailingNumberOrOne()
+        )
+        SegmentType.RECOVERY -> stringResource(
+            Res.string.segment_recovery,
+            segment.title.trailingNumberOrOne()
+        )
+        SegmentType.STEADY_CLIMB -> if (segment.title.contains("warm", ignoreCase = true)) {
+            stringResource(Res.string.segment_warmup_climb)
+        } else {
+            stringResource(Res.string.segment_steady_climb_adjustment)
+        }
+        SegmentType.COOLDOWN -> stringResource(Res.string.segment_cooldown)
+    }
+
+private fun String.trailingNumberOrOne(): Int =
+    substringAfterLast(' ', missingDelimiterValue = "")
+        .toIntOrNull()
+        ?: 1
 
 @Preview
 @Composable
