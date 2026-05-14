@@ -1,0 +1,18 @@
+package com.redred.treadmillvertiintervallcalc.presentation
+
+enum class WorkoutInputField {
+    TARGET_ELEVATION,
+    TOTAL_DURATION,
+    WARM_UP_DURATION,
+    COOL_DOWN_DURATION,
+    MAX_INCLINE,
+    INCLINE_STEP,
+    HARD_INTERVAL_DURATION,
+    RECOVERY_INTERVAL_DURATION,
+    HARD_INTERVAL_PACE,
+    RECOVERY_PACE,
+    WARM_UP_PACE,
+    COOL_DOWN_PACE,
+    PREFERRED_HARD_INCLINE,
+    PREFERRED_RECOVERY_INCLINE
+}
