@@ -65,5 +65,7 @@ class ComposeAppCommonTest {
         assertEquals(120, plan.segments.sumOf { it.durationMinutes })
         assertTrue(plan.segments.all { it.inclinePercent <= 15.0 })
         assertTrue(abs(plan.targetDifferenceMeters) < 10.0)
+        assertTrue(plan.totalDistanceKilometers > 0.0)
+        assertTrue(plan.averagePaceMinutesPerKm > 0.0)
     }
 }

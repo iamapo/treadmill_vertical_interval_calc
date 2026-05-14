@@ -28,6 +28,8 @@ fun WorkoutSummaryCard(
             "Target elevation" to metersText(plan.targetElevationMeters),
             "Planned elevation" to "${metersText(plan.plannedElevationMeters)} (${signedMetersText(plan.targetDifferenceMeters)})",
             "Total duration" to "${plan.totalDurationMinutes} min",
+            "Total distance" to kilometersText(plan.totalDistanceKilometers),
+            "Average pace" to paceText(plan.averagePaceMinutesPerKm),
             "Average gain" to "${oneDecimalText(plan.averageElevationPerMinute)} m/min"
         )
     )

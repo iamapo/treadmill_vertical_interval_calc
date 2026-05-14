@@ -16,6 +16,18 @@ data class WorkoutPlan(
     val averageElevationPerMinute: Double
         get() = if (totalDurationMinutes > 0) plannedElevationMeters / totalDurationMinutes else 0.0
 
+    val totalDistanceKilometers: Double
+        get() = segments.sumOf { segment ->
+            if (segment.paceMinutesPerKm > 0.0) {
+                segment.durationMinutes / segment.paceMinutesPerKm
+            } else {
+                0.0
+            }
+        }
+
+    val averagePaceMinutesPerKm: Double
+        get() = if (totalDistanceKilometers > 0.0) totalDurationMinutes / totalDistanceKilometers else 0.0
+
     val completedSegments: Int
         get() = segments.count { it.isCompleted }
 
