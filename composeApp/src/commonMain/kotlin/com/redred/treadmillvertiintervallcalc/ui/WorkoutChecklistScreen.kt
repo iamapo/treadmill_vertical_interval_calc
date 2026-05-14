@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutChecklistScreen(
@@ -40,13 +42,13 @@ fun WorkoutChecklistScreen(
                     onClick = onResetChecklist,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Reset checklist")
+                    Text(stringResource(Res.string.button_reset_checklist))
                 }
                 Button(
                     onClick = onCopyWorkoutText,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Copy workout text")
+                    Text(stringResource(Res.string.button_copy_workout_text))
                 }
             }
         }
@@ -74,12 +76,12 @@ private fun ChecklistProgressCard(plan: WorkoutPlan) {
     }
 
     SummaryCard(
-        title = "Checklist progress",
+        title = stringResource(Res.string.progress_title),
         rows = listOf(
-            "Completed segments" to "${plan.completedSegments}/${plan.segments.size}",
-            "Completed minutes" to "${plan.completedDurationMinutes}/${plan.totalDurationMinutes} min",
-            "Completed elevation" to metersText(plan.completedElevationMeters),
-            "Remaining elevation" to metersText(plan.remainingElevationMeters)
+            stringResource(Res.string.progress_completed_segments) to "${plan.completedSegments}/${plan.segments.size}",
+            stringResource(Res.string.progress_completed_minutes) to "${plan.completedDurationMinutes}/${plan.totalDurationMinutes} min",
+            stringResource(Res.string.progress_completed_elevation) to metersText(plan.completedElevationMeters),
+            stringResource(Res.string.progress_remaining_elevation) to metersText(plan.remainingElevationMeters)
         ),
         footer = {
             LinearProgressIndicator(

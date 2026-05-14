@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">VertiRun</string>
+    <string name="app_description">Plan a treadmill elevation interval workout from duration, target climb, paces, and incline limits.</string>
+
+    <string name="tab_input">Input</string>
+    <string name="tab_generated">Generated</string>
+    <string name="tab_checklist">Checklist</string>
+    <string name="empty_plan_message">Generate a workout first.</string>
+
+    <string name="section_workout_target">Workout target</string>
+    <string name="section_inclines">Inclines</string>
+    <string name="section_intervals_paces">Intervals and paces</string>
+
+    <string name="field_target_elevation">Target elevation gain</string>
+    <string name="field_total_duration">Total duration</string>
+    <string name="field_warmup_duration">Warm-up duration</string>
+    <string name="field_cooldown_duration">Cool-down duration</string>
+    <string name="field_max_incline">Maximum incline</string>
+    <string name="field_incline_step">Incline step size</string>
+    <string name="field_preferred_hard_incline">Preferred hard interval incline</string>
+    <string name="field_preferred_recovery_incline">Preferred recovery incline</string>
+    <string name="field_hard_interval_duration">Hard interval duration</string>
+    <string name="field_recovery_interval_duration">Recovery interval duration</string>
+    <string name="field_hard_interval_pace">Hard interval pace</string>
+    <string name="field_recovery_pace">Recovery pace</string>
+    <string name="field_warmup_pace">Warm-up pace</string>
+    <string name="field_cooldown_pace">Cool-down pace</string>
+
+    <string name="support_pace_format">Format: mm:ss</string>
+    <string name="support_meters">Meters</string>
+    <string name="support_percent">Percent</string>
+    <string name="support_minutes">Minutes</string>
+
+    <string name="button_generate_workout">Generate workout</string>
+    <string name="button_start_checklist">Start checklist</string>
+    <string name="button_copy_workout_text">Copy workout text</string>
+    <string name="button_reset_checklist">Reset checklist</string>
+
+    <string name="summary_title">Workout summary</string>
+    <string name="summary_target_elevation">Target elevation</string>
+    <string name="summary_planned_elevation">Planned elevation</string>
+    <string name="summary_total_duration">Total duration</string>
+    <string name="summary_total_distance">Total distance</string>
+    <string name="summary_average_pace">Average pace</string>
+    <string name="summary_average_gain">Average gain</string>
+
+    <string name="progress_title">Checklist progress</string>
+    <string name="progress_completed_segments">Completed segments</string>
+    <string name="progress_completed_minutes">Completed minutes</string>
+    <string name="progress_completed_elevation">Completed elevation</string>
+    <string name="progress_remaining_elevation">Remaining elevation</string>
+
+    <string name="segment_total">total</string>
+</resources>

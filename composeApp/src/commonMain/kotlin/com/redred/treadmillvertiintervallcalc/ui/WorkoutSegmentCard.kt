@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutSegmentCard(
@@ -71,7 +73,8 @@ fun WorkoutSegmentCard(
                 Text(
                     text = "${segment.durationMinutes} min | ${segment.pace}/km | " +
                         "${inclineText(segment.inclinePercent)} | " +
-                        "${metersText(segment.elevationMeters)} | total ${metersText(segment.cumulativeElevationMeters)}",
+                        "${metersText(segment.elevationMeters)} | " +
+                        "${stringResource(Res.string.segment_total)} ${metersText(segment.cumulativeElevationMeters)}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

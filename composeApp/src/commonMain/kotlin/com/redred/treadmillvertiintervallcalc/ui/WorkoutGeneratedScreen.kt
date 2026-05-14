@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutGeneratedScreen(
@@ -38,13 +40,13 @@ fun WorkoutGeneratedScreen(
                     onClick = onOpenChecklist,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Start checklist")
+                    Text(stringResource(Res.string.button_start_checklist))
                 }
                 OutlinedButton(
                     onClick = onCopyWorkoutText,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Copy workout text")
+                    Text(stringResource(Res.string.button_copy_workout_text))
                 }
             }
         }

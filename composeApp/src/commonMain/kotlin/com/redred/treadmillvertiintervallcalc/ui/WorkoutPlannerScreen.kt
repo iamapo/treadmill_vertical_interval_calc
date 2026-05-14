@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.PlannerScreen
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerEvent
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerViewModel
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutPlannerScreen(
@@ -118,14 +120,14 @@ private fun PlannerTabs(
             .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
         PlannerTab(
-            label = "Input",
+            label = stringResource(Res.string.tab_input),
             selected = selectedScreen == PlannerScreen.INPUT,
             enabled = true,
             onClick = { onSelected(PlannerScreen.INPUT) },
             modifier = Modifier.weight(1f)
         )
         PlannerTab(
-            label = "Generated",
+            label = stringResource(Res.string.tab_generated),
             selected = selectedScreen == PlannerScreen.GENERATED,
             enabled = hasPlan,
             onClick = { onSelected(PlannerScreen.GENERATED) },
@@ -134,7 +136,7 @@ private fun PlannerTabs(
                 .padding(start = 8.dp)
         )
         PlannerTab(
-            label = "Checklist",
+            label = stringResource(Res.string.tab_checklist),
             selected = selectedScreen == PlannerScreen.CHECKLIST,
             enabled = hasPlan,
             onClick = { onSelected(PlannerScreen.CHECKLIST) },
@@ -165,7 +167,7 @@ private fun PlannerTab(
 @Composable
 private fun EmptyPlanMessage() {
     Text(
-        text = "Generate a workout first.",
+        text = stringResource(Res.string.empty_plan_message),
         modifier = Modifier.padding(20.dp),
         style = MaterialTheme.typography.bodyLarge
     )

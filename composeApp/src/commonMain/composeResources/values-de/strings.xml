@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">VertiRun</string>
+    <string name="app_description">Plane ein Laufband-Höhenintervalltraining aus Dauer, Ziel-Höhenmetern, Pace und Steigungsgrenzen.</string>
+
+    <string name="tab_input">Eingabe</string>
+    <string name="tab_generated">Plan</string>
+    <string name="tab_checklist">Checkliste</string>
+    <string name="empty_plan_message">Erstelle zuerst ein Workout.</string>
+
+    <string name="section_workout_target">Workout-Ziel</string>
+    <string name="section_inclines">Steigungen</string>
+    <string name="section_intervals_paces">Intervalle und Pace</string>
+
+    <string name="field_target_elevation">Ziel-Höhenmeter</string>
+    <string name="field_total_duration">Gesamtdauer</string>
+    <string name="field_warmup_duration">Warm-up-Dauer</string>
+    <string name="field_cooldown_duration">Cool-down-Dauer</string>
+    <string name="field_max_incline">Maximale Steigung</string>
+    <string name="field_incline_step">Steigungsschritt</string>
+    <string name="field_preferred_hard_incline">Bevorzugte harte Steigung</string>
+    <string name="field_preferred_recovery_incline">Bevorzugte Erholungssteigung</string>
+    <string name="field_hard_interval_duration">Dauer hartes Intervall</string>
+    <string name="field_recovery_interval_duration">Dauer Erholung</string>
+    <string name="field_hard_interval_pace">Pace hartes Intervall</string>
+    <string name="field_recovery_pace">Pace Erholung</string>
+    <string name="field_warmup_pace">Warm-up-Pace</string>
+    <string name="field_cooldown_pace">Cool-down-Pace</string>
+
+    <string name="support_pace_format">Format: mm:ss</string>
+    <string name="support_meters">Meter</string>
+    <string name="support_percent">Prozent</string>
+    <string name="support_minutes">Minuten</string>
+
+    <string name="button_generate_workout">Workout erstellen</string>
+    <string name="button_start_checklist">Checkliste starten</string>
+    <string name="button_copy_workout_text">Workout-Text kopieren</string>
+    <string name="button_reset_checklist">Checkliste zurücksetzen</string>
+
+    <string name="summary_title">Workout-Zusammenfassung</string>
+    <string name="summary_target_elevation">Ziel-Höhenmeter</string>
+    <string name="summary_planned_elevation">Geplante Höhenmeter</string>
+    <string name="summary_total_duration">Gesamtdauer</string>
+    <string name="summary_total_distance">Gesamtdistanz</string>
+    <string name="summary_average_pace">Durchschnittspace</string>
+    <string name="summary_average_gain">Ø Höhenmeter</string>
+
+    <string name="progress_title">Checklisten-Fortschritt</string>
+    <string name="progress_completed_segments">Erledigte Abschnitte</string>
+    <string name="progress_completed_minutes">Erledigte Minuten</string>
+    <string name="progress_completed_elevation">Erledigte Höhenmeter</string>
+    <string name="progress_remaining_elevation">Verbleibende Höhenmeter</string>
+
+    <string name="segment_total">gesamt</string>
+</resources>

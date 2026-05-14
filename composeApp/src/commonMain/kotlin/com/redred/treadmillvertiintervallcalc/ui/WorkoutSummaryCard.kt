@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutSummaryCard(
@@ -23,14 +25,14 @@ fun WorkoutSummaryCard(
 ) {
     SummaryCard(
         modifier = modifier,
-        title = "Workout summary",
+        title = stringResource(Res.string.summary_title),
         rows = listOf(
-            "Target elevation" to metersText(plan.targetElevationMeters),
-            "Planned elevation" to "${metersText(plan.plannedElevationMeters)} (${signedMetersText(plan.targetDifferenceMeters)})",
-            "Total duration" to "${plan.totalDurationMinutes} min",
-            "Total distance" to kilometersText(plan.totalDistanceKilometers),
-            "Average pace" to paceText(plan.averagePaceMinutesPerKm),
-            "Average gain" to "${oneDecimalText(plan.averageElevationPerMinute)} m/min"
+            stringResource(Res.string.summary_target_elevation) to metersText(plan.targetElevationMeters),
+            stringResource(Res.string.summary_planned_elevation) to "${metersText(plan.plannedElevationMeters)} (${signedMetersText(plan.targetDifferenceMeters)})",
+            stringResource(Res.string.summary_total_duration) to "${plan.totalDurationMinutes} min",
+            stringResource(Res.string.summary_total_distance) to kilometersText(plan.totalDistanceKilometers),
+            stringResource(Res.string.summary_average_pace) to paceText(plan.averagePaceMinutesPerKm),
+            stringResource(Res.string.summary_average_gain) to "${oneDecimalText(plan.averageElevationPerMinute)} m/min"
         )
     )
 }

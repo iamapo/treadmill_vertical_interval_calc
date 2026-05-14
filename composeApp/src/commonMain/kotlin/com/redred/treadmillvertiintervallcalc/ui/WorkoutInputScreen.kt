@@ -19,6 +19,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutInputField
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerState
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
+import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutInputScreen(
@@ -35,12 +38,12 @@ fun WorkoutInputScreen(
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
-                    text = "VertiRun",
+                    text = stringResource(Res.string.app_title),
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "Plan a treadmill elevation interval workout from duration, target climb, paces, and incline limits.",
+                    text = stringResource(Res.string.app_description),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -48,31 +51,31 @@ fun WorkoutInputScreen(
         }
 
         item {
-            FieldSection(title = "Workout target") {
-                NumberField(state, WorkoutInputField.TARGET_ELEVATION, "Target elevation gain", "1200", onInputChanged)
-                NumberField(state, WorkoutInputField.TOTAL_DURATION, "Total duration", "120", onInputChanged)
-                NumberField(state, WorkoutInputField.WARM_UP_DURATION, "Warm-up duration", "10", onInputChanged)
-                NumberField(state, WorkoutInputField.COOL_DOWN_DURATION, "Cool-down duration", "10", onInputChanged)
+            FieldSection(title = Res.string.section_workout_target) {
+                NumberField(state, WorkoutInputField.TARGET_ELEVATION, Res.string.field_target_elevation, "1200", onInputChanged)
+                NumberField(state, WorkoutInputField.TOTAL_DURATION, Res.string.field_total_duration, "120", onInputChanged)
+                NumberField(state, WorkoutInputField.WARM_UP_DURATION, Res.string.field_warmup_duration, "10", onInputChanged)
+                NumberField(state, WorkoutInputField.COOL_DOWN_DURATION, Res.string.field_cooldown_duration, "10", onInputChanged)
             }
         }
 
         item {
-            FieldSection(title = "Inclines") {
-                NumberField(state, WorkoutInputField.MAX_INCLINE, "Maximum incline", "15", onInputChanged)
-                NumberField(state, WorkoutInputField.INCLINE_STEP, "Incline step size", "0.5", onInputChanged)
-                NumberField(state, WorkoutInputField.PREFERRED_HARD_INCLINE, "Preferred hard interval incline", "15", onInputChanged)
-                NumberField(state, WorkoutInputField.PREFERRED_RECOVERY_INCLINE, "Preferred recovery incline", "5", onInputChanged)
+            FieldSection(title = Res.string.section_inclines) {
+                NumberField(state, WorkoutInputField.MAX_INCLINE, Res.string.field_max_incline, "15", onInputChanged)
+                NumberField(state, WorkoutInputField.INCLINE_STEP, Res.string.field_incline_step, "0.5", onInputChanged)
+                NumberField(state, WorkoutInputField.PREFERRED_HARD_INCLINE, Res.string.field_preferred_hard_incline, "15", onInputChanged)
+                NumberField(state, WorkoutInputField.PREFERRED_RECOVERY_INCLINE, Res.string.field_preferred_recovery_incline, "5", onInputChanged)
             }
         }
 
         item {
-            FieldSection(title = "Intervals and paces") {
-                NumberField(state, WorkoutInputField.HARD_INTERVAL_DURATION, "Hard interval duration", "5", onInputChanged)
-                NumberField(state, WorkoutInputField.RECOVERY_INTERVAL_DURATION, "Recovery interval duration", "3", onInputChanged)
-                PaceField(state, WorkoutInputField.HARD_INTERVAL_PACE, "Hard interval pace", "8:30", onInputChanged)
-                PaceField(state, WorkoutInputField.RECOVERY_PACE, "Recovery pace", "9:30", onInputChanged)
-                PaceField(state, WorkoutInputField.WARM_UP_PACE, "Warm-up pace", "7:30", onInputChanged)
-                PaceField(state, WorkoutInputField.COOL_DOWN_PACE, "Cool-down pace", "8:30", onInputChanged)
+            FieldSection(title = Res.string.section_intervals_paces) {
+                NumberField(state, WorkoutInputField.HARD_INTERVAL_DURATION, Res.string.field_hard_interval_duration, "5", onInputChanged)
+                NumberField(state, WorkoutInputField.RECOVERY_INTERVAL_DURATION, Res.string.field_recovery_interval_duration, "3", onInputChanged)
+                PaceField(state, WorkoutInputField.HARD_INTERVAL_PACE, Res.string.field_hard_interval_pace, "8:30", onInputChanged)
+                PaceField(state, WorkoutInputField.RECOVERY_PACE, Res.string.field_recovery_pace, "9:30", onInputChanged)
+                PaceField(state, WorkoutInputField.WARM_UP_PACE, Res.string.field_warmup_pace, "7:30", onInputChanged)
+                PaceField(state, WorkoutInputField.COOL_DOWN_PACE, Res.string.field_cooldown_pace, "8:30", onInputChanged)
             }
         }
 
@@ -81,7 +84,7 @@ fun WorkoutInputScreen(
                 onClick = onGenerateWorkout,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Generate workout", textAlign = TextAlign.Center)
+                Text(stringResource(Res.string.button_generate_workout), textAlign = TextAlign.Center)
             }
         }
     }
@@ -89,12 +92,12 @@ fun WorkoutInputScreen(
 
 @Composable
 private fun FieldSection(
-    title: String,
+    title: StringResource,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(
-            text = title,
+            text = stringResource(title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
@@ -106,7 +109,7 @@ private fun FieldSection(
 private fun NumberField(
     state: WorkoutPlannerState,
     field: WorkoutInputField,
-    label: String,
+    label: StringResource,
     placeholder: String,
     onInputChanged: (WorkoutInputField, String) -> Unit
 ) {
@@ -124,7 +127,7 @@ private fun NumberField(
 private fun PaceField(
     state: WorkoutPlannerState,
     field: WorkoutInputField,
-    label: String,
+    label: StringResource,
     placeholder: String,
     onInputChanged: (WorkoutInputField, String) -> Unit
 ) {
@@ -142,7 +145,7 @@ private fun PaceField(
 private fun PlannerTextField(
     state: WorkoutPlannerState,
     field: WorkoutInputField,
-    label: String,
+    label: StringResource,
     placeholder: String,
     keyboardType: KeyboardType,
     onInputChanged: (WorkoutInputField, String) -> Unit
@@ -151,7 +154,7 @@ private fun PlannerTextField(
     OutlinedTextField(
         value = state.valueFor(field),
         onValueChange = { onInputChanged(field, it) },
-        label = { Text(label) },
+        label = { Text(stringResource(label)) },
         placeholder = { Text(placeholder) },
         isError = error != null,
         supportingText = {
@@ -159,13 +162,13 @@ private fun PlannerTextField(
                 WorkoutInputField.HARD_INTERVAL_PACE,
                 WorkoutInputField.RECOVERY_PACE,
                 WorkoutInputField.WARM_UP_PACE,
-                WorkoutInputField.COOL_DOWN_PACE -> "Format: mm:ss"
-                WorkoutInputField.TARGET_ELEVATION -> "Meters"
+                WorkoutInputField.COOL_DOWN_PACE -> stringResource(Res.string.support_pace_format)
+                WorkoutInputField.TARGET_ELEVATION -> stringResource(Res.string.support_meters)
                 WorkoutInputField.MAX_INCLINE,
                 WorkoutInputField.INCLINE_STEP,
                 WorkoutInputField.PREFERRED_HARD_INCLINE,
-                WorkoutInputField.PREFERRED_RECOVERY_INCLINE -> "Percent"
-                else -> "Minutes"
+                WorkoutInputField.PREFERRED_RECOVERY_INCLINE -> stringResource(Res.string.support_percent)
+                else -> stringResource(Res.string.support_minutes)
             })
         },
         singleLine = true,
