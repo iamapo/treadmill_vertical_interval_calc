@@ -3,10 +3,27 @@
     <string name="app_title">VertiRun</string>
     <string name="app_description">Plane ein Laufband-Höhenintervalltraining aus Dauer, Ziel-Höhenmetern, Pace und Steigungsgrenzen.</string>
 
-    <string name="tab_input">Eingabe</string>
-    <string name="tab_generated">Plan</string>
+    <string name="tab_input">Planer</string>
+    <string name="tab_generated">Fertiger Plan</string>
     <string name="tab_checklist">Checkliste</string>
     <string name="empty_plan_message">Erstelle zuerst ein Workout.</string>
+    <string name="mode_auto">Auto</string>
+    <string name="mode_manual">Manuell</string>
+    <string name="manual_summary_title">Zusammenfassung manuelles Workout</string>
+    <string name="manual_section_segments">Manuelle Segmente</string>
+    <string name="manual_type_warmup">Aufwärmen</string>
+    <string name="manual_type_repetition">Wiederholung</string>
+    <string name="manual_type_single">Einzelsegment</string>
+    <string name="manual_type_cooldown">Cooldown</string>
+    <string name="field_manual_duration">Dauer (min)</string>
+    <string name="field_manual_pace">Tempo (mm:ss)</string>
+    <string name="field_manual_incline_optional">Steigung % (optional)</string>
+    <string name="field_manual_repeats">Wiederholungen</string>
+    <string name="field_manual_recovery_duration">Erholung Dauer (min)</string>
+    <string name="field_manual_recovery_pace">Erholung Tempo (mm:ss)</string>
+    <string name="field_manual_recovery_incline">Erholung Steigung %</string>
+    <string name="button_add_segment">Segment hinzufügen</string>
+    <string name="button_remove_segment">Segment entfernen</string>
 
     <string name="section_workout_target">Workout-Ziel</string>
     <string name="section_inclines">Steigungen</string>
@@ -33,6 +50,7 @@
     <string name="support_minutes">Minuten</string>
 
     <string name="button_generate_workout">Workout erstellen</string>
+    <string name="button_clear_saved_state">Gespeicherten Stand löschen</string>
     <string name="button_start_checklist">Checkliste starten</string>
     <string name="button_copy_workout_text">Workout-Text kopieren</string>
     <string name="button_reset_checklist">Checkliste zurücksetzen</string>

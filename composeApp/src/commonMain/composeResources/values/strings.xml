@@ -7,6 +7,23 @@
     <string name="tab_generated">Generated</string>
     <string name="tab_checklist">Checklist</string>
     <string name="empty_plan_message">Generate a workout first.</string>
+    <string name="mode_auto">Auto</string>
+    <string name="mode_manual">Manual</string>
+    <string name="manual_summary_title">Manual workout summary</string>
+    <string name="manual_section_segments">Manual segments</string>
+    <string name="manual_type_warmup">Warm-up</string>
+    <string name="manual_type_repetition">Repetition</string>
+    <string name="manual_type_single">Single</string>
+    <string name="manual_type_cooldown">Cool-down</string>
+    <string name="field_manual_duration">Duration (min)</string>
+    <string name="field_manual_pace">Pace (mm:ss)</string>
+    <string name="field_manual_incline_optional">Incline % (optional)</string>
+    <string name="field_manual_repeats">Repetitions</string>
+    <string name="field_manual_recovery_duration">Recovery duration (min)</string>
+    <string name="field_manual_recovery_pace">Recovery pace (mm:ss)</string>
+    <string name="field_manual_recovery_incline">Recovery incline %</string>
+    <string name="button_add_segment">Add segment</string>
+    <string name="button_remove_segment">Remove segment</string>
 
     <string name="section_workout_target">Workout target</string>
     <string name="section_inclines">Inclines</string>
@@ -33,6 +50,7 @@
     <string name="support_minutes">Minutes</string>
 
     <string name="button_generate_workout">Generate workout</string>
+    <string name="button_clear_saved_state">Clear saved workout</string>
     <string name="button_start_checklist">Start checklist</string>
     <string name="button_copy_workout_text">Copy workout text</string>
     <string name="button_reset_checklist">Reset checklist</string>

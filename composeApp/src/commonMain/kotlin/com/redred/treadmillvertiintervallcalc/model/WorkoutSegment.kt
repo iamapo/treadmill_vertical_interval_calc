@@ -1,5 +1,8 @@
 package com.redred.treadmillvertiintervallcalc.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class WorkoutSegment(
     val id: String,
     val title: String,

@@ -3,6 +3,7 @@ package com.redred.treadmillvertiintervallcalc.presentation
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
 
 data class WorkoutPlannerState(
+    val planningMode: PlanningMode = PlanningMode.AUTO,
     val targetElevation: String = "1200",
     val totalDuration: String = "120",
     val warmUpDuration: String = "10",
@@ -25,7 +26,13 @@ data class WorkoutPlannerState(
     val completedElevation: Double = 0.0,
     val completedDuration: Int = 0,
     val copiedTextPreview: String = "",
-    val copyTextVersion: Int = 0
+    val copyTextVersion: Int = 0,
+    val manualSegments: List<ManualSegmentInput> = emptyList(),
+    val manualTotalDurationMinutes: Int = 0,
+    val manualTotalDistanceKilometers: Double = 0.0,
+    val manualAveragePaceMinutesPerKm: Double = 0.0,
+    val manualElevationMeters: Double = 0.0,
+    val showAddSegmentTypePicker: Boolean = false
 ) {
     fun valueFor(field: WorkoutInputField): String = when (field) {
         WorkoutInputField.TARGET_ELEVATION -> targetElevation

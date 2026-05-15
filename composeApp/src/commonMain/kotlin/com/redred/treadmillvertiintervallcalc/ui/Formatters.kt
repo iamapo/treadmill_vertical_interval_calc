@@ -32,9 +32,8 @@ fun oneDecimalText(value: Double): String {
 fun kilometersText(value: Double): String = "${oneDecimalText(value)} km"
 
 fun paceText(minutesPerKm: Double): String {
-    if (minutesPerKm <= 0.0) return "-/km"
     val totalSeconds = (minutesPerKm * 60.0).roundToInt()
     val minutes = totalSeconds / 60
     val seconds = totalSeconds % 60
-    return "$minutes:${seconds.toString().padStart(2, '0')}/km"
+    return "$minutes:${seconds}"
 }

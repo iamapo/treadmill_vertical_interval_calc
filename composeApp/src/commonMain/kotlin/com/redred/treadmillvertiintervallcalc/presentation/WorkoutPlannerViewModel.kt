@@ -6,27 +6,81 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.redred.treadmillvertiintervallcalc.domain.PaceParser
 import com.redred.treadmillvertiintervallcalc.domain.WorkoutGenerator
+import com.redred.treadmillvertiintervallcalc.model.SegmentType
+import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
 import com.redred.treadmillvertiintervallcalc.model.WorkoutInput
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
 
 class WorkoutPlannerViewModel(
-    private val workoutGenerator: WorkoutGenerator = WorkoutGenerator()
+    private val workoutGenerator: WorkoutGenerator = WorkoutGenerator(),
+    private val plannerStateStore: PlannerStateStore? = null
 ) : ViewModel() {
     var state by mutableStateOf(WorkoutPlannerState())
         private set
 
+    init {
+        restorePersistedState()
+        recalculateManualSummary()
+    }
+
     fun onEvent(event: WorkoutPlannerEvent) {
         when (event) {
             is WorkoutPlannerEvent.InputChanged -> updateInput(event.field, event.value)
+            is WorkoutPlannerEvent.SelectPlanningMode -> updatePlanningMode(event.mode)
+            is WorkoutPlannerEvent.ManualSegmentDurationChanged -> updateManualSegment(event.segmentId) {
+                it.copy(durationMinutes = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentPaceChanged -> updateManualSegment(event.segmentId) {
+                it.copy(pace = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentInclineChanged -> updateManualSegment(event.segmentId) {
+                it.copy(inclinePercent = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentRepeatsChanged -> updateManualSegment(event.segmentId) {
+                it.copy(repeats = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentRecoveryDurationChanged -> updateManualSegment(event.segmentId) {
+                it.copy(recoveryDurationMinutes = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentRecoveryPaceChanged -> updateManualSegment(event.segmentId) {
+                it.copy(recoveryPace = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentRecoveryInclineChanged -> updateManualSegment(event.segmentId) {
+                it.copy(recoveryInclinePercent = event.value)
+            }
+            is WorkoutPlannerEvent.ManualSegmentTypeChanged -> updateManualSegment(event.segmentId) {
+                it.copy(type = event.type)
+            }
+            WorkoutPlannerEvent.ToggleAddManualSegmentTypePicker -> {
+                state = state.copy(showAddSegmentTypePicker = !state.showAddSegmentTypePicker)
+            }
+            is WorkoutPlannerEvent.AddManualSegment -> addManualSegment(
+                type = event.type,
+                durationMinutes = event.durationMinutes,
+                pace = event.pace,
+                inclinePercent = event.inclinePercent,
+                repeats = event.repeats,
+                recoveryDurationMinutes = event.recoveryDurationMinutes,
+                recoveryPace = event.recoveryPace,
+                recoveryInclinePercent = event.recoveryInclinePercent
+            )
+            is WorkoutPlannerEvent.RemoveManualSegment -> removeManualSegment(event.segmentId)
             is WorkoutPlannerEvent.ToggleSegmentCompleted -> toggleSegmentCompleted(event.segmentId)
             is WorkoutPlannerEvent.SelectScreen -> state = state.copy(selectedScreen = event.screen)
             WorkoutPlannerEvent.GenerateWorkout -> generateWorkout()
+            WorkoutPlannerEvent.ClearSavedState -> clearSavedState()
             WorkoutPlannerEvent.ResetChecklist -> resetChecklist()
             WorkoutPlannerEvent.CopyWorkoutText -> copyWorkoutText()
         }
+        persistState()
     }
 
     fun generateWorkout() {
+        if (state.planningMode == PlanningMode.MANUAL) {
+            generateManualWorkout()
+            return
+        }
+
         val validation = validateInput(state)
         if (validation.input == null) {
             state = state.copy(
@@ -42,6 +96,13 @@ class WorkoutPlannerViewModel(
             selectedScreen = PlannerScreen.GENERATED,
             copiedTextPreview = ""
         )
+    }
+
+    private fun updatePlanningMode(mode: PlanningMode) {
+        state = state.copy(planningMode = mode)
+        if (mode == PlanningMode.MANUAL) {
+            recalculateManualSummary()
+        }
     }
 
     fun toggleSegmentCompleted(segmentId: String) {
@@ -88,6 +149,169 @@ class WorkoutPlannerViewModel(
             WorkoutInputField.PREFERRED_HARD_INCLINE -> state.copy(preferredHardIncline = value)
             WorkoutInputField.PREFERRED_RECOVERY_INCLINE -> state.copy(preferredRecoveryIncline = value)
         }.copy(validationErrors = state.validationErrors - field)
+    }
+
+    private fun updateManualSegment(segmentId: String, transform: (ManualSegmentInput) -> ManualSegmentInput) {
+        state = state.copy(
+            manualSegments = state.manualSegments.map { segment ->
+                if (segment.id == segmentId) transform(segment) else segment
+            }
+        )
+        recalculateManualSummary()
+    }
+
+    private fun addManualSegment(
+        type: ManualSegmentType,
+        durationMinutes: String,
+        pace: String,
+        inclinePercent: String,
+        repeats: String,
+        recoveryDurationMinutes: String,
+        recoveryPace: String,
+        recoveryInclinePercent: String
+    ) {
+        val index = state.manualSegments.size + 1
+        state = state.copy(
+            manualSegments = state.manualSegments + ManualSegmentInput(
+                id = "manual_custom_$index",
+                type = type,
+                durationMinutes = durationMinutes.trim(),
+                pace = pace.trim(),
+                inclinePercent = inclinePercent.trim(),
+                repeats = repeats.trim().ifBlank { "1" },
+                recoveryDurationMinutes = recoveryDurationMinutes.trim(),
+                recoveryPace = recoveryPace.trim(),
+                recoveryInclinePercent = recoveryInclinePercent.trim()
+            ),
+            showAddSegmentTypePicker = false
+        )
+        recalculateManualSummary()
+    }
+
+    private fun removeManualSegment(segmentId: String) {
+        state = state.copy(manualSegments = state.manualSegments.filterNot { it.id == segmentId })
+        recalculateManualSummary()
+    }
+
+    private fun recalculateManualSummary() {
+        val segments = buildManualSegments(state.manualSegments, failOnInvalid = false)
+        val totalDuration = segments.sumOf { it.durationMinutes }
+        val totalDistance = segments.sumOf { segment ->
+            if (segment.paceMinutesPerKm > 0.0) segment.durationMinutes / segment.paceMinutesPerKm else 0.0
+        }
+        state = state.copy(
+            manualTotalDurationMinutes = totalDuration,
+            manualTotalDistanceKilometers = totalDistance,
+            manualAveragePaceMinutesPerKm = if (totalDistance > 0.0) totalDuration / totalDistance else 0.0,
+            manualElevationMeters = segments.sumOf { it.elevationMeters }
+        )
+    }
+
+    private fun generateManualWorkout() {
+        val segments = buildManualSegments(state.manualSegments, failOnInvalid = true)
+        if (segments.isEmpty()) {
+            state = state.copy(selectedScreen = PlannerScreen.INPUT)
+            return
+        }
+
+        val totalDuration = segments.sumOf { it.durationMinutes }
+        val targetElevation = segments.sumOf { it.elevationMeters }
+        val plan = WorkoutPlan(
+            targetElevationMeters = targetElevation,
+            totalDurationMinutes = totalDuration,
+            segments = segments
+        )
+        state = state.withPlan(plan).copy(
+            validationErrors = emptyMap(),
+            selectedScreen = PlannerScreen.GENERATED,
+            copiedTextPreview = ""
+        )
+    }
+
+    private fun buildManualSegments(
+        inputs: List<ManualSegmentInput>,
+        failOnInvalid: Boolean
+    ): List<WorkoutSegment> {
+        var cumulativeElevation = 0.0
+        var generatedId = 0
+        val segments = mutableListOf<WorkoutSegment>()
+
+        inputs.forEachIndexed { index, input ->
+            val duration = input.durationMinutes.toPositiveIntOrNull()
+                ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            val paceValue = PaceParser.parseMinutesPerKm(input.pace)
+                ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            val incline = input.inclinePercent.toNonNegativeDoubleOrNull() ?: 0.0
+            val repeats = if (input.type == ManualSegmentType.REPETITION) {
+                input.repeats.toPositiveIntOrNull()
+                    ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            } else {
+                1
+            }
+            val recoveryDuration = if (input.type == ManualSegmentType.REPETITION) {
+                input.recoveryDurationMinutes.toPositiveIntOrNull()
+                    ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            } else {
+                0
+            }
+            val recoveryPaceValue = if (input.type == ManualSegmentType.REPETITION) {
+                PaceParser.parseMinutesPerKm(input.recoveryPace)
+                    ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            } else {
+                0.0
+            }
+            val recoveryIncline = if (input.type == ManualSegmentType.REPETITION) {
+                input.recoveryInclinePercent.toNonNegativeDoubleOrNull()
+                    ?: if (failOnInvalid) return emptyList() else return@forEachIndexed
+            } else {
+                0.0
+            }
+
+            repeat(repeats) { repeatIndex ->
+                generatedId += 1
+                val segmentDistance = duration / paceValue
+                val segmentElevation = segmentDistance * 1000.0 * (incline / 100.0)
+                cumulativeElevation += segmentElevation
+                val title = when (input.type) {
+                    ManualSegmentType.WARMUP -> "Warm-up"
+                    ManualSegmentType.REPETITION -> "Repetition ${repeatIndex + 1}"
+                    ManualSegmentType.SINGLE -> "Segment ${index + 1}"
+                    ManualSegmentType.COOLDOWN -> "Cool-down"
+                }
+
+                segments += WorkoutSegment(
+                    id = "manual_$generatedId",
+                    title = title,
+                    durationMinutes = duration,
+                    pace = input.pace.trim(),
+                    paceMinutesPerKm = paceValue,
+                    inclinePercent = incline,
+                    elevationMeters = segmentElevation,
+                    cumulativeElevationMeters = cumulativeElevation,
+                    type = input.type.mappedType
+                )
+
+                if (input.type == ManualSegmentType.REPETITION) {
+                    generatedId += 1
+                    val recoveryDistance = recoveryDuration / recoveryPaceValue
+                    val recoveryElevation = recoveryDistance * 1000.0 * (recoveryIncline / 100.0)
+                    cumulativeElevation += recoveryElevation
+                    segments += WorkoutSegment(
+                        id = "manual_$generatedId",
+                        title = "Recovery ${repeatIndex + 1}",
+                        durationMinutes = recoveryDuration,
+                        pace = input.recoveryPace.trim(),
+                        paceMinutesPerKm = recoveryPaceValue,
+                        inclinePercent = recoveryIncline,
+                        elevationMeters = recoveryElevation,
+                        cumulativeElevationMeters = cumulativeElevation,
+                        type = SegmentType.RECOVERY
+                    )
+                }
+            }
+        }
+
+        return segments
     }
 
     private fun validateInput(state: WorkoutPlannerState): ValidationResult {
@@ -166,6 +390,23 @@ class WorkoutPlannerViewModel(
         }
 
         return ValidationResult(input = input, errors = errors)
+    }
+
+    private fun restorePersistedState() {
+        val json = plannerStateStore?.load() ?: return
+        val restored = snapshotJsonToState(json) ?: return
+        state = restored
+    }
+
+    private fun persistState() {
+        val json = state.toSnapshotJson()
+        plannerStateStore?.save(json)
+    }
+
+    private fun clearSavedState() {
+        plannerStateStore?.clear()
+        state = WorkoutPlannerState()
+        recalculateManualSummary()
     }
 }
 

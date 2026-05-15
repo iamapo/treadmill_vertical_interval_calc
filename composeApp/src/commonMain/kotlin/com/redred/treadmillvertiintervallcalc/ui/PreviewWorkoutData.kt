@@ -1,8 +1,11 @@
 package com.redred.treadmillvertiintervallcalc.ui
 
+import com.redred.treadmillvertiintervallcalc.ui.components.*
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +19,19 @@ internal fun PreviewSurface(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    MaterialTheme {
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = VertiGreen,
+            primaryContainer = VertiGreenSoft,
+            secondary = VertiGreen,
+            background = VertiPage,
+            surface = androidx.compose.ui.graphics.Color.White,
+            onPrimary = androidx.compose.ui.graphics.Color.White,
+            onPrimaryContainer = VertiText,
+            onBackground = VertiText,
+            onSurface = VertiText
+        )
+    ) {
         Surface(
             modifier = modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background

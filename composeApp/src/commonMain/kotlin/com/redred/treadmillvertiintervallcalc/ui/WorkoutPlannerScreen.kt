@@ -1,15 +1,11 @@
 package com.redred.treadmillvertiintervallcalc.ui
 
+import com.redred.treadmillvertiintervallcalc.ui.components.*
+
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -19,10 +15,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.PlannerScreen
+import com.redred.treadmillvertiintervallcalc.presentation.PlanningMode
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerEvent
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerViewModel
-import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.*
 
 @Composable
 fun WorkoutPlannerScreen(
@@ -40,143 +35,143 @@ fun WorkoutPlannerScreen(
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = VertiPage
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .safeContentPadding()
+                .padding(8.dp)
         ) {
-            PlannerTabs(
+            PlannerHeader(selectedScreen = state.selectedScreen)
+            Column(modifier = Modifier.weight(1f)) {
+                when (state.selectedScreen) {
+                        PlannerScreen.INPUT -> WorkoutInputScreen(
+                            state = state,
+                            onInputChanged = { field, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.InputChanged(field, value))
+                            },
+                            onSelectPlanningMode = {
+                                viewModel.onEvent(WorkoutPlannerEvent.SelectPlanningMode(it))
+                            },
+                            onManualSegmentDurationChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentDurationChanged(segmentId, value))
+                            },
+                            onManualSegmentPaceChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentPaceChanged(segmentId, value))
+                            },
+                            onManualSegmentInclineChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentInclineChanged(segmentId, value))
+                            },
+                            onManualSegmentRepeatsChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentRepeatsChanged(segmentId, value))
+                            },
+                            onManualSegmentRecoveryDurationChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentRecoveryDurationChanged(segmentId, value))
+                            },
+                            onManualSegmentRecoveryPaceChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentRecoveryPaceChanged(segmentId, value))
+                            },
+                            onManualSegmentRecoveryInclineChanged = { segmentId, value ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentRecoveryInclineChanged(segmentId, value))
+                            },
+                            onManualSegmentTypeChanged = { segmentId, type ->
+                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentTypeChanged(segmentId, type))
+                            },
+                            onToggleAddManualSegmentTypePicker = {
+                                viewModel.onEvent(WorkoutPlannerEvent.ToggleAddManualSegmentTypePicker)
+                            },
+                            onAddManualSegment = { type, duration, pace, incline, repeats, recoveryDuration, recoveryPace, recoveryIncline ->
+                                viewModel.onEvent(
+                                    WorkoutPlannerEvent.AddManualSegment(
+                                        type = type,
+                                        durationMinutes = duration,
+                                        pace = pace,
+                                        inclinePercent = incline,
+                                        repeats = repeats,
+                                        recoveryDurationMinutes = recoveryDuration,
+                                        recoveryPace = recoveryPace,
+                                        recoveryInclinePercent = recoveryIncline
+                                    )
+                                )
+                            },
+                            onRemoveManualSegment = {
+                                viewModel.onEvent(WorkoutPlannerEvent.RemoveManualSegment(it))
+                            },
+                        onGenerateWorkout = {
+                            viewModel.onEvent(WorkoutPlannerEvent.GenerateWorkout)
+                        },
+                        onClearSavedState = {
+                            viewModel.onEvent(WorkoutPlannerEvent.ClearSavedState)
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+                        PlannerScreen.GENERATED -> {
+                            val plan = state.generatedWorkoutPlan
+                            if (plan == null) {
+                                EmptyPlanMessage()
+                            } else {
+                                WorkoutGeneratedScreen(
+                                    plan = plan,
+                                    onOpenChecklist = {
+                                        viewModel.onEvent(WorkoutPlannerEvent.SelectScreen(PlannerScreen.CHECKLIST))
+                                    },
+                                    onCopyWorkoutText = {
+                                        viewModel.onEvent(WorkoutPlannerEvent.CopyWorkoutText)
+                                    },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+
+                        PlannerScreen.CHECKLIST -> {
+                            val plan = state.generatedWorkoutPlan
+                            if (plan == null) {
+                                EmptyPlanMessage()
+                            } else {
+                                WorkoutChecklistScreen(
+                                    plan = plan,
+                                    onToggleSegmentCompleted = {
+                                        viewModel.onEvent(WorkoutPlannerEvent.ToggleSegmentCompleted(it))
+                                    },
+                                    onResetChecklist = {
+                                        viewModel.onEvent(WorkoutPlannerEvent.ResetChecklist)
+                                    },
+                                    onCopyWorkoutText = {
+                                        viewModel.onEvent(WorkoutPlannerEvent.CopyWorkoutText)
+                                    },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
+                        }
+                }
+            }
+            PlannerBottomNavigation(
                 selectedScreen = state.selectedScreen,
                 hasPlan = state.generatedWorkoutPlan != null,
                 onSelected = { viewModel.onEvent(WorkoutPlannerEvent.SelectScreen(it)) }
             )
-
-            when (state.selectedScreen) {
-                PlannerScreen.INPUT -> WorkoutInputScreen(
-                    state = state,
-                    onInputChanged = { field, value ->
-                        viewModel.onEvent(WorkoutPlannerEvent.InputChanged(field, value))
-                    },
-                    onGenerateWorkout = {
-                        viewModel.onEvent(WorkoutPlannerEvent.GenerateWorkout)
-                    },
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                PlannerScreen.GENERATED -> {
-                    val plan = state.generatedWorkoutPlan
-                    if (plan == null) {
-                        EmptyPlanMessage()
-                    } else {
-                        WorkoutGeneratedScreen(
-                            plan = plan,
-                            onOpenChecklist = {
-                                viewModel.onEvent(WorkoutPlannerEvent.SelectScreen(PlannerScreen.CHECKLIST))
-                            },
-                            onCopyWorkoutText = {
-                                viewModel.onEvent(WorkoutPlannerEvent.CopyWorkoutText)
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-
-                PlannerScreen.CHECKLIST -> {
-                    val plan = state.generatedWorkoutPlan
-                    if (plan == null) {
-                        EmptyPlanMessage()
-                    } else {
-                        WorkoutChecklistScreen(
-                            plan = plan,
-                            onToggleSegmentCompleted = {
-                                viewModel.onEvent(WorkoutPlannerEvent.ToggleSegmentCompleted(it))
-                            },
-                            onResetChecklist = {
-                                viewModel.onEvent(WorkoutPlannerEvent.ResetChecklist)
-                            },
-                            onCopyWorkoutText = {
-                                viewModel.onEvent(WorkoutPlannerEvent.CopyWorkoutText)
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-            }
         }
     }
-}
-
-@Composable
-private fun PlannerTabs(
-    selectedScreen: PlannerScreen,
-    hasPlan: Boolean,
-    onSelected: (PlannerScreen) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 12.dp)
-    ) {
-        PlannerTab(
-            label = stringResource(Res.string.tab_input),
-            selected = selectedScreen == PlannerScreen.INPUT,
-            enabled = true,
-            onClick = { onSelected(PlannerScreen.INPUT) },
-            modifier = Modifier.weight(1f)
-        )
-        PlannerTab(
-            label = stringResource(Res.string.tab_generated),
-            selected = selectedScreen == PlannerScreen.GENERATED,
-            enabled = hasPlan,
-            onClick = { onSelected(PlannerScreen.GENERATED) },
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp)
-        )
-        PlannerTab(
-            label = stringResource(Res.string.tab_checklist),
-            selected = selectedScreen == PlannerScreen.CHECKLIST,
-            enabled = hasPlan,
-            onClick = { onSelected(PlannerScreen.CHECKLIST) },
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp)
-        )
-    }
-}
-
-@Composable
-private fun PlannerTab(
-    label: String,
-    selected: Boolean,
-    enabled: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    FilterChip(
-        selected = selected,
-        enabled = enabled,
-        onClick = onClick,
-        label = { Text(label) },
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun EmptyPlanMessage() {
-    Text(
-        text = stringResource(Res.string.empty_plan_message),
-        modifier = Modifier.padding(20.dp),
-        style = MaterialTheme.typography.bodyLarge
-    )
 }
 
 @Preview
 @Composable
 private fun WorkoutPlannerScreenPreview() {
     val viewModel = remember { WorkoutPlannerViewModel() }
+    PreviewSurface {
+        WorkoutPlannerScreen(viewModel = viewModel)
+    }
+}
+
+@Preview
+@Composable
+private fun WorkoutPlannerScreenManualEmptyPreview() {
+    val viewModel = remember {
+        WorkoutPlannerViewModel().apply {
+            onEvent(WorkoutPlannerEvent.SelectPlanningMode(PlanningMode.MANUAL))
+        }
+    }
     PreviewSurface {
         WorkoutPlannerScreen(viewModel = viewModel)
     }
