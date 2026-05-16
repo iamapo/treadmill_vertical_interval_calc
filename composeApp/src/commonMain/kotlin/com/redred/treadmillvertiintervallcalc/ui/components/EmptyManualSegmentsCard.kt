@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_flag
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_flag
 
 @Composable
 internal fun EmptyManualSegmentsCard() {

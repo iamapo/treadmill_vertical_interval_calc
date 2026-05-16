@@ -1,6 +1,6 @@
 TEAM_ID=
 
-PRODUCT_NAME=TreadmillVertiIntervallCalc
+PRODUCT_NAME=VerticalTreadmillRun
 PRODUCT_BUNDLE_IDENTIFIER=com.redred.treadmillvertiintervallcalc.TreadmillVertiIntervallCalc$(TEAM_ID)
 
 CURRENT_PROJECT_VERSION=1

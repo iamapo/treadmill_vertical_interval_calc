@@ -57,7 +57,10 @@ class ComposeAppCommonTest {
             coolDownPace = "8:30",
             coolDownPaceMinutesPerKm = assertNotNull(PaceParser.parseMinutesPerKm("8:30")),
             preferredHardInclinePercent = 15.0,
-            preferredRecoveryInclinePercent = 5.0
+            preferredRecoveryInclinePercent = 5.0,
+            warmUpInclinePercent = 2.0,
+            recoveryInclinePercent = 5.0,
+            coolDownInclinePercent = 0.0
         )
 
         val plan = WorkoutGenerator().generate(input)

@@ -5,14 +5,14 @@ import com.redred.treadmillvertiintervallcalc.ui.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_mountain_logo
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain_logo
 
 @Composable
 internal fun MountainLogo() {
     VrIcon(
         resource = Res.drawable.vr_ic_mountain_logo,
-        contentDescription = "VertiRun",
+        contentDescription = "VerticalTreadmillRun",
         size = 44.dp,
         tint = VertiGreen
     )

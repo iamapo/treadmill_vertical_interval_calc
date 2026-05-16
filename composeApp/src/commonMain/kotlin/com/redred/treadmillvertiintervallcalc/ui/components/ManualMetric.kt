@@ -10,11 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_clock
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clock
 
 @Composable
 internal fun ManualMetric(
@@ -25,8 +26,22 @@ internal fun ManualMetric(
 ) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         VrIcon(resource = icon, contentDescription = null, size = 22.dp, tint = VertiGreen)
-        Text(text = label, color = VertiMuted, style = MaterialTheme.typography.labelSmall, textAlign = TextAlign.Center)
-        Text(text = value, color = VertiText, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+        Text(
+            text = label,
+            color = VertiMuted,
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            text = value,
+            color = VertiText,
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 

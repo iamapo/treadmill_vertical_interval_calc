@@ -18,5 +18,8 @@ data class WorkoutInput(
     val coolDownPace: String,
     val coolDownPaceMinutesPerKm: Double,
     val preferredHardInclinePercent: Double,
-    val preferredRecoveryInclinePercent: Double
+    val preferredRecoveryInclinePercent: Double,
+    val warmUpInclinePercent: Double,
+    val recoveryInclinePercent: Double,
+    val coolDownInclinePercent: Double
 )

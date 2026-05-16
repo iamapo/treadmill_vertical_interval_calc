@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.empty_plan_message
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.empty_plan_message
 
 @Composable
 internal fun EmptyPlanMessage() {

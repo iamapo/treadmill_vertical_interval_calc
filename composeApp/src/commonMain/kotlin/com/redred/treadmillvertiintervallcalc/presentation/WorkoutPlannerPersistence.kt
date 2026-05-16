@@ -26,6 +26,9 @@ private data class PlannerSnapshot(
     val coolDownPace: String,
     val preferredHardIncline: String,
     val preferredRecoveryIncline: String,
+    val warmUpIncline: String = "2",
+    val recoveryIncline: String = "5",
+    val coolDownIncline: String = "0",
     val selectedScreen: PlannerScreen,
     val generatedWorkoutPlan: WorkoutPlan?,
     val manualSegments: List<ManualSegmentInput>,
@@ -49,6 +52,9 @@ internal fun WorkoutPlannerState.toSnapshotJson(): String {
         coolDownPace = coolDownPace,
         preferredHardIncline = preferredHardIncline,
         preferredRecoveryIncline = preferredRecoveryIncline,
+        warmUpIncline = warmUpIncline,
+        recoveryIncline = recoveryIncline,
+        coolDownIncline = coolDownIncline,
         selectedScreen = selectedScreen,
         generatedWorkoutPlan = generatedWorkoutPlan,
         manualSegments = manualSegments,
@@ -61,7 +67,7 @@ internal fun snapshotJsonToState(json: String): WorkoutPlannerState? {
     return runCatching {
         val snapshot = plannerJson.decodeFromString(PlannerSnapshot.serializer(), json)
         WorkoutPlannerState(
-            planningMode = snapshot.planningMode,
+            planningMode = PlanningMode.MANUAL,
             targetElevation = snapshot.targetElevation,
             totalDuration = snapshot.totalDuration,
             warmUpDuration = snapshot.warmUpDuration,
@@ -76,6 +82,9 @@ internal fun snapshotJsonToState(json: String): WorkoutPlannerState? {
             coolDownPace = snapshot.coolDownPace,
             preferredHardIncline = snapshot.preferredHardIncline,
             preferredRecoveryIncline = snapshot.preferredRecoveryIncline,
+            warmUpIncline = snapshot.warmUpIncline,
+            recoveryIncline = snapshot.recoveryIncline,
+            coolDownIncline = snapshot.coolDownIncline,
             selectedScreen = snapshot.selectedScreen,
             generatedWorkoutPlan = snapshot.generatedWorkoutPlan,
             manualSegments = snapshot.manualSegments,

@@ -3,7 +3,7 @@ package com.redred.treadmillvertiintervallcalc.presentation
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
 
 data class WorkoutPlannerState(
-    val planningMode: PlanningMode = PlanningMode.AUTO,
+    val planningMode: PlanningMode = PlanningMode.MANUAL,
     val targetElevation: String = "1200",
     val totalDuration: String = "120",
     val warmUpDuration: String = "10",
@@ -18,6 +18,9 @@ data class WorkoutPlannerState(
     val coolDownPace: String = "8:30",
     val preferredHardIncline: String = "15",
     val preferredRecoveryIncline: String = "5",
+    val warmUpIncline: String = "2",
+    val recoveryIncline: String = "5",
+    val coolDownIncline: String = "0",
     val selectedScreen: PlannerScreen = PlannerScreen.INPUT,
     val generatedWorkoutPlan: WorkoutPlan? = null,
     val validationErrors: Map<WorkoutInputField, String> = emptyMap(),
@@ -49,5 +52,8 @@ data class WorkoutPlannerState(
         WorkoutInputField.COOL_DOWN_PACE -> coolDownPace
         WorkoutInputField.PREFERRED_HARD_INCLINE -> preferredHardIncline
         WorkoutInputField.PREFERRED_RECOVERY_INCLINE -> preferredRecoveryIncline
+        WorkoutInputField.WARM_UP_INCLINE -> warmUpIncline
+        WorkoutInputField.RECOVERY_INCLINE -> recoveryIncline
+        WorkoutInputField.COOL_DOWN_INCLINE -> coolDownIncline
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_title">VertiRun</string>
+    <string name="app_title">VerticalTreadmillRun</string>
     <string name="app_description">Plane ein Laufband-Höhenintervalltraining aus Dauer, Ziel-Höhenmetern, Pace und Steigungsgrenzen.</string>
 
     <string name="tab_input">Planer</string>
@@ -37,6 +37,8 @@
     <string name="field_incline_step">Steigungsschritt</string>
     <string name="field_preferred_hard_incline">Bevorzugte harte Steigung</string>
     <string name="field_preferred_recovery_incline">Bevorzugte Erholungssteigung</string>
+    <string name="field_warmup_incline">Warm-up-Steigung</string>
+    <string name="field_cooldown_incline">Cool-down-Steigung</string>
     <string name="field_hard_interval_duration">Dauer hartes Intervall</string>
     <string name="field_recovery_interval_duration">Dauer Erholung</string>
     <string name="field_hard_interval_pace">Pace hartes Intervall</string>

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutInputField
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerState
 import org.jetbrains.compose.resources.DrawableResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_interval_bars
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_interval_bars
 
 @Composable
 internal fun DualInputRow(

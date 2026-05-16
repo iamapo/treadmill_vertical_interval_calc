@@ -18,9 +18,9 @@ import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerState
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.field_target_elevation
-import vertirun.composeapp.generated.resources.vr_ic_mountain
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.field_target_elevation
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain
 
 @Composable
 internal fun InputRow(

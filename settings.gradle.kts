@@ -1,4 +1,4 @@
-rootProject.name = "VertiRun"
+rootProject.name = "VerticalTreadmillRun"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

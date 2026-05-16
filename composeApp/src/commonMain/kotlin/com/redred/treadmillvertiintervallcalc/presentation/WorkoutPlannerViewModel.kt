@@ -5,14 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.redred.treadmillvertiintervallcalc.domain.PaceParser
-import com.redred.treadmillvertiintervallcalc.domain.WorkoutGenerator
 import com.redred.treadmillvertiintervallcalc.model.SegmentType
 import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
 import com.redred.treadmillvertiintervallcalc.model.WorkoutInput
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
+import kotlin.math.roundToInt
 
 class WorkoutPlannerViewModel(
-    private val workoutGenerator: WorkoutGenerator = WorkoutGenerator(),
     private val plannerStateStore: PlannerStateStore? = null
 ) : ViewModel() {
     var state by mutableStateOf(WorkoutPlannerState())
@@ -76,33 +75,12 @@ class WorkoutPlannerViewModel(
     }
 
     fun generateWorkout() {
-        if (state.planningMode == PlanningMode.MANUAL) {
-            generateManualWorkout()
-            return
-        }
-
-        val validation = validateInput(state)
-        if (validation.input == null) {
-            state = state.copy(
-                validationErrors = validation.errors,
-                selectedScreen = PlannerScreen.INPUT
-            )
-            return
-        }
-
-        val plan = workoutGenerator.generate(validation.input)
-        state = state.withPlan(plan).copy(
-            validationErrors = emptyMap(),
-            selectedScreen = PlannerScreen.GENERATED,
-            copiedTextPreview = ""
-        )
+        generateManualWorkout()
     }
 
     private fun updatePlanningMode(mode: PlanningMode) {
-        state = state.copy(planningMode = mode)
-        if (mode == PlanningMode.MANUAL) {
-            recalculateManualSummary()
-        }
+        state = state.copy(planningMode = mode.withoutAutoGeneration())
+        recalculateManualSummary()
     }
 
     fun toggleSegmentCompleted(segmentId: String) {
@@ -148,7 +126,15 @@ class WorkoutPlannerViewModel(
             WorkoutInputField.COOL_DOWN_PACE -> state.copy(coolDownPace = value)
             WorkoutInputField.PREFERRED_HARD_INCLINE -> state.copy(preferredHardIncline = value)
             WorkoutInputField.PREFERRED_RECOVERY_INCLINE -> state.copy(preferredRecoveryIncline = value)
+            WorkoutInputField.WARM_UP_INCLINE -> state.copy(warmUpIncline = value)
+            WorkoutInputField.RECOVERY_INCLINE -> state.copy(
+                recoveryIncline = value,
+                preferredRecoveryIncline = value
+            )
+            WorkoutInputField.COOL_DOWN_INCLINE -> state.copy(coolDownIncline = value)
         }.copy(validationErrors = state.validationErrors - field)
+
+        applyAutoFeasibilityValidation()
     }
 
     private fun updateManualSegment(segmentId: String, transform: (ManualSegmentInput) -> ManualSegmentInput) {
@@ -345,6 +331,12 @@ class WorkoutPlannerViewModel(
             ?: errors.putAndReturn(WorkoutInputField.PREFERRED_HARD_INCLINE, "Enter 0% or more.")
         val preferredRecoveryIncline = state.preferredRecoveryIncline.toNonNegativeDoubleOrNull()
             ?: errors.putAndReturn(WorkoutInputField.PREFERRED_RECOVERY_INCLINE, "Enter 0% or more.")
+        val warmUpIncline = state.warmUpIncline.toNonNegativeDoubleOrNull()
+            ?: errors.putAndReturn(WorkoutInputField.WARM_UP_INCLINE, "Enter 0% or more.")
+        val recoveryIncline = state.recoveryIncline.toNonNegativeDoubleOrNull()
+            ?: errors.putAndReturn(WorkoutInputField.RECOVERY_INCLINE, "Enter 0% or more.")
+        val coolDownIncline = state.coolDownIncline.toNonNegativeDoubleOrNull()
+            ?: errors.putAndReturn(WorkoutInputField.COOL_DOWN_INCLINE, "Enter 0% or more.")
 
         if (totalDuration != null && warmUpDuration != null && coolDownDuration != null &&
             totalDuration <= warmUpDuration + coolDownDuration
@@ -362,6 +354,19 @@ class WorkoutPlannerViewModel(
 
         if (maxIncline != null && preferredRecoveryIncline != null && preferredRecoveryIncline > maxIncline) {
             errors[WorkoutInputField.PREFERRED_RECOVERY_INCLINE] = "Recovery incline must not exceed max incline."
+        }
+        if (maxIncline != null && warmUpIncline != null && warmUpIncline > maxIncline) {
+            errors[WorkoutInputField.WARM_UP_INCLINE] = "Warm-up incline must not exceed max incline."
+        }
+        if (maxIncline != null && recoveryIncline != null && recoveryIncline > maxIncline) {
+            errors[WorkoutInputField.RECOVERY_INCLINE] = "Recovery incline must not exceed max incline."
+        }
+        if (maxIncline != null && coolDownIncline != null && coolDownIncline > maxIncline) {
+            errors[WorkoutInputField.COOL_DOWN_INCLINE] = "Cool-down incline must not exceed max incline."
+        }
+        val feasibilityError = autoFeasibilityError(state)
+        if (feasibilityError != null) {
+            errors[WorkoutInputField.TARGET_ELEVATION] = feasibilityError
         }
 
         val input = if (errors.isEmpty()) {
@@ -383,7 +388,10 @@ class WorkoutPlannerViewModel(
                 coolDownPace = state.coolDownPace.trim(),
                 coolDownPaceMinutesPerKm = requireNotNull(coolDownPace),
                 preferredHardInclinePercent = requireNotNull(preferredHardIncline),
-                preferredRecoveryInclinePercent = requireNotNull(preferredRecoveryIncline)
+                preferredRecoveryInclinePercent = requireNotNull(preferredRecoveryIncline),
+                warmUpInclinePercent = requireNotNull(warmUpIncline),
+                recoveryInclinePercent = requireNotNull(recoveryIncline),
+                coolDownInclinePercent = requireNotNull(coolDownIncline)
             )
         } else {
             null
@@ -395,7 +403,7 @@ class WorkoutPlannerViewModel(
     private fun restorePersistedState() {
         val json = plannerStateStore?.load() ?: return
         val restored = snapshotJsonToState(json) ?: return
-        state = restored
+        state = restored.copy(planningMode = restored.planningMode.withoutAutoGeneration())
     }
 
     private fun persistState() {
@@ -408,12 +416,28 @@ class WorkoutPlannerViewModel(
         state = WorkoutPlannerState()
         recalculateManualSummary()
     }
+
+    private fun applyAutoFeasibilityValidation() {
+        if (state.planningMode != PlanningMode.AUTO) return
+        val error = autoFeasibilityError(state)
+        state = if (error == null) {
+            state.copy(validationErrors = state.validationErrors - WorkoutInputField.TARGET_ELEVATION)
+        } else {
+            state.copy(validationErrors = state.validationErrors + (WorkoutInputField.TARGET_ELEVATION to error))
+        }
+    }
 }
 
 private data class ValidationResult(
     val input: WorkoutInput?,
     val errors: Map<WorkoutInputField, String>
 )
+
+private fun PlanningMode.withoutAutoGeneration(): PlanningMode =
+    when (this) {
+        PlanningMode.AUTO -> PlanningMode.MANUAL
+        PlanningMode.MANUAL -> PlanningMode.MANUAL
+    }
 
 private fun WorkoutPlannerState.withPlan(plan: WorkoutPlan): WorkoutPlannerState =
     copy(
@@ -441,4 +465,55 @@ private fun String.normalizedNumber(): String = trim().replace(",", ".")
 private fun <K> MutableMap<K, String>.putAndReturn(key: K, value: String): Nothing? {
     this[key] = value
     return null
+}
+
+private fun autoFeasibilityError(state: WorkoutPlannerState): String? {
+    val targetElevation = state.targetElevation.toPositiveDoubleOrNull() ?: return null
+    val totalDuration = state.totalDuration.toPositiveIntOrNull() ?: return null
+    val warmUpDuration = state.warmUpDuration.toNonNegativeIntOrNull() ?: return null
+    val coolDownDuration = state.coolDownDuration.toNonNegativeIntOrNull() ?: return null
+    val maxIncline = state.maxIncline.toPositiveDoubleOrNull() ?: return null
+    val hardIntervalDuration = state.hardIntervalDuration.toPositiveIntOrNull() ?: return null
+    val recoveryIntervalDuration = state.recoveryIntervalDuration.toPositiveIntOrNull() ?: return null
+    val warmUpPace = PaceParser.parseMinutesPerKm(state.warmUpPace) ?: return null
+    val coolDownPace = PaceParser.parseMinutesPerKm(state.coolDownPace) ?: return null
+    val hardPace = PaceParser.parseMinutesPerKm(state.hardIntervalPace) ?: return null
+    val recoveryPace = PaceParser.parseMinutesPerKm(state.recoveryPace) ?: return null
+    val warmUpIncline = state.warmUpIncline.toNonNegativeDoubleOrNull() ?: return null
+    val recoveryIncline = state.recoveryIncline.toNonNegativeDoubleOrNull() ?: return null
+    val coolDownIncline = state.coolDownIncline.toNonNegativeDoubleOrNull() ?: return null
+
+    if (totalDuration <= warmUpDuration + coolDownDuration) return null
+
+    val mainWorkoutMinutes = totalDuration - warmUpDuration - coolDownDuration
+    val blockDuration = hardIntervalDuration + recoveryIntervalDuration
+    if (blockDuration <= 0) return null
+    val blockCount = mainWorkoutMinutes / blockDuration
+    val adjustmentMinutes = mainWorkoutMinutes - blockCount * blockDuration
+
+    val fixedElevation = elevationMeters(warmUpDuration, warmUpPace, warmUpIncline) +
+        elevationMeters(coolDownDuration, coolDownPace, coolDownIncline) +
+        blockCount * elevationMeters(recoveryIntervalDuration, recoveryPace, recoveryIncline)
+
+    val hardMinutes = blockCount * hardIntervalDuration
+    val maxReachable = fixedElevation +
+        elevationMeters(hardMinutes, hardPace, maxIncline) +
+        elevationMeters(adjustmentMinutes, hardPace, maxIncline)
+    val minReachable = fixedElevation
+
+    return when {
+        targetElevation > maxReachable + 0.1 -> {
+            "Target too high for current settings. Max possible is ${maxReachable.roundToInt()} m."
+        }
+        targetElevation + 0.1 < minReachable -> {
+            "Target too low for fixed warm-up/recovery/cool-down inclines. Minimum is ${minReachable.roundToInt()} m."
+        }
+        else -> null
+    }
+}
+
+private fun elevationMeters(durationMinutes: Int, paceMinutesPerKm: Double, inclinePercent: Double): Double {
+    if (durationMinutes <= 0 || paceMinutesPerKm <= 0.0) return 0.0
+    val distanceKm = durationMinutes / paceMinutesPerKm
+    return distanceKm * 1000.0 * (inclinePercent / 100.0)
 }

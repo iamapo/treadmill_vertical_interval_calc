@@ -14,8 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_check_circle
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_check_circle
 
 @Composable
 internal fun ProgressMetric(

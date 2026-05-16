@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_title">VertiRun</string>
+    <string name="app_title">VerticalTreadmillRun</string>
     <string name="app_description">Plan a treadmill elevation interval workout from duration, target climb, paces, and incline limits.</string>
 
     <string name="tab_input">Input</string>
@@ -37,6 +37,8 @@
     <string name="field_incline_step">Incline step size</string>
     <string name="field_preferred_hard_incline">Preferred hard interval incline</string>
     <string name="field_preferred_recovery_incline">Preferred recovery incline</string>
+    <string name="field_warmup_incline">Warm-up incline</string>
+    <string name="field_cooldown_incline">Cool-down incline</string>
     <string name="field_hard_interval_duration">Hard interval duration</string>
     <string name="field_recovery_interval_duration">Recovery interval duration</string>
     <string name="field_hard_interval_pace">Hard interval pace</string>

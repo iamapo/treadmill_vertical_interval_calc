@@ -20,9 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.ManualSegmentType
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_check_circle
-import vertirun.composeapp.generated.resources.vr_ic_chevron_right
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_check_circle
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_chevron_right
 
 @Composable
 internal fun SegmentTypeChoice(

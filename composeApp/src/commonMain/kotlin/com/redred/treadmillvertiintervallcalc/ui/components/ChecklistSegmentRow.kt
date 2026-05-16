@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_check_circle
-import vertirun.composeapp.generated.resources.vr_ic_chevron_down
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_check_circle
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_chevron_down
 
 @Composable
 internal fun ChecklistSegmentRow(

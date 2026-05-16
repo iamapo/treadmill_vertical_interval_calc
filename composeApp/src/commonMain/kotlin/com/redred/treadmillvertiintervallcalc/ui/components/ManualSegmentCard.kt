@@ -20,16 +20,16 @@ import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.ManualSegmentInput
 import com.redred.treadmillvertiintervallcalc.presentation.ManualSegmentType
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.button_remove_segment
-import vertirun.composeapp.generated.resources.field_manual_duration
-import vertirun.composeapp.generated.resources.field_manual_incline_optional
-import vertirun.composeapp.generated.resources.field_manual_pace
-import vertirun.composeapp.generated.resources.field_manual_recovery_duration
-import vertirun.composeapp.generated.resources.field_manual_recovery_incline
-import vertirun.composeapp.generated.resources.field_manual_recovery_pace
-import vertirun.composeapp.generated.resources.field_manual_repeats
-import vertirun.composeapp.generated.resources.vr_ic_trash
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.button_remove_segment
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_duration
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_incline_optional
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_pace
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_duration
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_incline
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_pace
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_repeats
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_trash
 
 @Composable
 internal fun ManualSegmentCard(

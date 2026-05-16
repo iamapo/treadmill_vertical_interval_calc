@@ -20,12 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_chevron_right
-import vertirun.composeapp.generated.resources.vr_ic_clock
-import vertirun.composeapp.generated.resources.vr_ic_incline_up
-import vertirun.composeapp.generated.resources.vr_ic_mountain
-import vertirun.composeapp.generated.resources.vr_ic_speedometer
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_chevron_right
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clock
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_incline_up
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_speedometer
 
 @Composable
 internal fun GeneratedTimeline(plan: WorkoutPlan) {

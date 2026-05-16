@@ -13,9 +13,11 @@ class WorkoutGenerator {
         val step = input.inclineStepPercent
         val maxIncline = ElevationCalculator.oneDecimal(input.maxInclinePercent)
         val hardPreference = roundAndClamp(input.preferredHardInclinePercent, step, maxIncline)
-        val recoveryPreference = roundAndClamp(input.preferredRecoveryInclinePercent, step, maxIncline)
+        val recoveryIncline = roundAndClamp(input.recoveryInclinePercent, step, maxIncline)
+        val warmUpIncline = roundAndClamp(input.warmUpInclinePercent, step, maxIncline)
+        val coolDownIncline = roundAndClamp(input.coolDownInclinePercent, step, maxIncline)
 
-        val warmUpDrafts = warmUpDrafts(input, recoveryPreference, step, maxIncline)
+        val warmUpDrafts = warmUpDrafts(input, warmUpIncline)
         val mainWorkoutMinutes = input.totalDurationMinutes -
             input.warmUpDurationMinutes -
             input.coolDownDurationMinutes
@@ -43,7 +45,7 @@ class WorkoutGenerator {
                         pace = input.recoveryPace,
                         paceMinutesPerKm = input.recoveryPaceMinutesPerKm,
                         type = SegmentType.RECOVERY,
-                        inclineRole = InclineRole.RECOVERY
+                        inclineRole = InclineRole.Fixed(recoveryIncline)
                     )
                 )
             }
@@ -67,7 +69,7 @@ class WorkoutGenerator {
                         pace = input.coolDownPace,
                         paceMinutesPerKm = input.coolDownPaceMinutesPerKm,
                         type = SegmentType.COOLDOWN,
-                        inclineRole = InclineRole.Fixed(0.0)
+                        inclineRole = InclineRole.Fixed(coolDownIncline)
                     )
                 )
             }
@@ -78,15 +80,13 @@ class WorkoutGenerator {
             targetElevationMeters = input.targetElevationMeters,
             maxIncline = maxIncline,
             step = step,
-            hardPreference = hardPreference,
-            recoveryPreference = recoveryPreference
+            hardPreference = hardPreference
         )
 
         var cumulativeElevation = 0.0
         val segments = drafts.mapIndexed { index, draft ->
             val incline = when (draft.inclineRole) {
                 InclineRole.HARD -> chosenInclines.hard
-                InclineRole.RECOVERY -> chosenInclines.recovery
                 InclineRole.ADJUSTMENT -> chosenInclines.adjustment
                 is InclineRole.Fixed -> draft.inclineRole.inclinePercent
             }
@@ -118,45 +118,17 @@ class WorkoutGenerator {
 
     private fun warmUpDrafts(
         input: WorkoutInput,
-        recoveryPreference: Double,
-        step: Double,
-        maxIncline: Double
+        warmUpIncline: Double
     ): List<SegmentDraft> {
         if (input.warmUpDurationMinutes == 0) return emptyList()
-
-        val easyIncline = roundAndClamp(2.0, step, maxIncline)
-        if (input.warmUpDurationMinutes <= 10) {
-            return listOf(
-                SegmentDraft(
-                    title = "Warm-up",
-                    durationMinutes = input.warmUpDurationMinutes,
-                    pace = input.warmUpPace,
-                    paceMinutesPerKm = input.warmUpPaceMinutesPerKm,
-                    type = SegmentType.WARMUP,
-                    inclineRole = InclineRole.Fixed(easyIncline)
-                )
-            )
-        }
-
-        val climbMinutes = 5
-        val easyMinutes = input.warmUpDurationMinutes - climbMinutes
-        val climbIncline = roundAndClamp(recoveryPreference.coerceAtMost(4.0).coerceAtLeast(easyIncline), step, maxIncline)
         return listOf(
             SegmentDraft(
                 title = "Warm-up",
-                durationMinutes = easyMinutes,
+                durationMinutes = input.warmUpDurationMinutes,
                 pace = input.warmUpPace,
                 paceMinutesPerKm = input.warmUpPaceMinutesPerKm,
                 type = SegmentType.WARMUP,
-                inclineRole = InclineRole.Fixed(easyIncline)
-            ),
-            SegmentDraft(
-                title = "Warm-up climb",
-                durationMinutes = climbMinutes,
-                pace = input.warmUpPace,
-                paceMinutesPerKm = input.warmUpPaceMinutesPerKm,
-                type = SegmentType.STEADY_CLIMB,
-                inclineRole = InclineRole.Fixed(climbIncline)
+                inclineRole = InclineRole.Fixed(warmUpIncline)
             )
         )
     }
@@ -166,8 +138,7 @@ class WorkoutGenerator {
         targetElevationMeters: Double,
         maxIncline: Double,
         step: Double,
-        hardPreference: Double,
-        recoveryPreference: Double
+        hardPreference: Double
     ): ChosenInclines {
         val inclineValues = inclineValues(maxIncline, step)
         val fixedElevation = drafts
@@ -181,39 +152,32 @@ class WorkoutGenerator {
             }
 
         val hardFactor = drafts.elevationFactorFor(InclineRole.HARD)
-        val recoveryFactor = drafts.elevationFactorFor(InclineRole.RECOVERY)
         val adjustmentFactor = drafts.elevationFactorFor(InclineRole.ADJUSTMENT)
 
         var best = ScoredInclines(
-            inclines = ChosenInclines(hardPreference, recoveryPreference, 0.0),
+            inclines = ChosenInclines(hardPreference, 0.0),
             score = Double.MAX_VALUE
         )
 
         // Hard and recovery inclines are chosen globally so repeated blocks stay readable.
         // The optional final adjustment incline is solved from the remaining elevation, then rounded to the treadmill step.
         for (hardIncline in inclineValues) {
-            for (recoveryIncline in inclineValues) {
-                val beforeAdjustment = fixedElevation +
-                    hardFactor * hardIncline +
-                    recoveryFactor * recoveryIncline
-                val adjustmentIncline = if (adjustmentFactor > 0.0) {
-                    roundAndClamp((targetElevationMeters - beforeAdjustment) / adjustmentFactor, step, maxIncline)
-                } else {
-                    0.0
-                }
-                val plannedElevation = beforeAdjustment + adjustmentFactor * adjustmentIncline
-                val differencePenalty = abs(plannedElevation - targetElevationMeters)
-                val preferencePenalty = abs(hardIncline - hardPreference) * 0.35 +
-                    abs(recoveryIncline - recoveryPreference) * 0.35
-                val intervalShapePenalty = if (hardIncline < recoveryIncline) 500.0 else 0.0
-                val score = differencePenalty + preferencePenalty + intervalShapePenalty
+            val beforeAdjustment = fixedElevation + hardFactor * hardIncline
+            val adjustmentIncline = if (adjustmentFactor > 0.0) {
+                roundAndClamp((targetElevationMeters - beforeAdjustment) / adjustmentFactor, step, maxIncline)
+            } else {
+                0.0
+            }
+            val plannedElevation = beforeAdjustment + adjustmentFactor * adjustmentIncline
+            val differencePenalty = abs(plannedElevation - targetElevationMeters)
+            val preferencePenalty = abs(hardIncline - hardPreference) * 0.35
+            val score = differencePenalty + preferencePenalty
 
-                if (score < best.score) {
-                    best = ScoredInclines(
-                        inclines = ChosenInclines(hardIncline, recoveryIncline, adjustmentIncline),
-                        score = score
-                    )
-                }
+            if (score < best.score) {
+                best = ScoredInclines(
+                    inclines = ChosenInclines(hardIncline, adjustmentIncline),
+                    score = score
+                )
             }
         }
 
@@ -252,14 +216,12 @@ private data class SegmentDraft(
 
 private sealed interface InclineRole {
     data object HARD : InclineRole
-    data object RECOVERY : InclineRole
     data object ADJUSTMENT : InclineRole
     data class Fixed(val inclinePercent: Double) : InclineRole
 }
 
 private data class ChosenInclines(
     val hard: Double,
-    val recovery: Double,
     val adjustment: Double
 )
 

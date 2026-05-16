@@ -19,9 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.button_add_segment
-import vertirun.composeapp.generated.resources.vr_ic_add
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.button_add_segment
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_add
 
 @Composable
 internal fun AddSegmentButton(onClick: () -> Unit) {

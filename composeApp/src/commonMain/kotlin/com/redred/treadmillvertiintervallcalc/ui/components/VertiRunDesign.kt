@@ -11,7 +11,7 @@ import com.redred.treadmillvertiintervallcalc.model.SegmentType
 import com.redred.treadmillvertiintervallcalc.model.WorkoutSegment
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.*
+import verticaltreadmillrun.composeapp.generated.resources.*
 
 internal val VertiGreen = Color(0xFF007A3D)
 internal val VertiGreenDark = Color(0xFF006B36)

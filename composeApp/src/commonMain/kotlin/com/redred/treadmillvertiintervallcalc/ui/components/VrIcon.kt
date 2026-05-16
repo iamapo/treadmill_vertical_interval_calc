@@ -12,8 +12,8 @@ import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import androidx.compose.foundation.Image
 import com.redred.treadmillvertiintervallcalc.ui.PreviewSurface
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.vr_ic_mountain_logo
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain_logo
 
 @Composable
 internal fun VrIcon(

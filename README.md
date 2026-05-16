@@ -1,6 +1,6 @@
-# VertiRun
+# VerticalTreadmillRun
 
-VertiRun is a Compose Multiplatform treadmill elevation interval planner. It lets a runner enter a target elevation gain, total duration, warm-up and cool-down time, treadmill incline limits, pace ranges, and preferred hard/recovery interval structure, then generates a structured workout checklist.
+VerticalTreadmillRun is a Compose Multiplatform treadmill elevation interval planner. It lets a runner enter a target elevation gain, total duration, warm-up and cool-down time, treadmill incline limits, pace ranges, and preferred hard/recovery interval structure, then generates a structured workout checklist.
 
 The app is local-state only for now and is organized so persistence, PDF export, and Apple Notes export can be added later without moving the core calculation logic.
 

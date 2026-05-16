@@ -19,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.PlannerScreen
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.tab_checklist
-import vertirun.composeapp.generated.resources.tab_generated
-import vertirun.composeapp.generated.resources.tab_input
-import vertirun.composeapp.generated.resources.vr_ic_calendar_planer
-import vertirun.composeapp.generated.resources.vr_ic_checklist
-import vertirun.composeapp.generated.resources.vr_ic_clipboard
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.tab_checklist
+import verticaltreadmillrun.composeapp.generated.resources.tab_generated
+import verticaltreadmillrun.composeapp.generated.resources.tab_input
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_calendar_planer
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_checklist
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clipboard
 
 @Composable
 internal fun PlannerBottomNavigation(

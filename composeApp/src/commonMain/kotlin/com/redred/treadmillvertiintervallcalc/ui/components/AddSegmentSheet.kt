@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -32,21 +36,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.ManualSegmentType
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.button_add_segment
-import vertirun.composeapp.generated.resources.field_manual_duration
-import vertirun.composeapp.generated.resources.field_manual_incline_optional
-import vertirun.composeapp.generated.resources.field_manual_pace
-import vertirun.composeapp.generated.resources.field_manual_recovery_duration
-import vertirun.composeapp.generated.resources.field_manual_recovery_incline
-import vertirun.composeapp.generated.resources.field_manual_recovery_pace
-import vertirun.composeapp.generated.resources.field_manual_repeats
-import vertirun.composeapp.generated.resources.vr_ic_clock
-import vertirun.composeapp.generated.resources.vr_ic_heart_recovery
-import vertirun.composeapp.generated.resources.vr_ic_incline_up
-import vertirun.composeapp.generated.resources.vr_ic_repeat
-import vertirun.composeapp.generated.resources.vr_ic_spark
-import vertirun.composeapp.generated.resources.vr_ic_speedometer
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.button_add_segment
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_duration
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_incline_optional
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_pace
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_duration
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_incline
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_recovery_pace
+import verticaltreadmillrun.composeapp.generated.resources.field_manual_repeats
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clock
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_heart_recovery
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_incline_up
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_repeat
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_spark
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_speedometer
 
 @Composable
 internal fun AddSegmentSheet(
@@ -67,6 +71,9 @@ internal fun AddSegmentSheet(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .imePadding()
+            .navigationBarsPadding()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = 10.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {

@@ -20,17 +20,17 @@ import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.PlanningMode
 import com.redred.treadmillvertiintervallcalc.presentation.WorkoutPlannerState
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.summary_average_pace
-import vertirun.composeapp.generated.resources.summary_planned_elevation
-import vertirun.composeapp.generated.resources.summary_title
-import vertirun.composeapp.generated.resources.summary_total_distance
-import vertirun.composeapp.generated.resources.summary_total_duration
-import vertirun.composeapp.generated.resources.vr_ic_clipboard
-import vertirun.composeapp.generated.resources.vr_ic_clock
-import vertirun.composeapp.generated.resources.vr_ic_mountain
-import vertirun.composeapp.generated.resources.vr_ic_route
-import vertirun.composeapp.generated.resources.vr_ic_speedometer
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.summary_average_pace
+import verticaltreadmillrun.composeapp.generated.resources.summary_planned_elevation
+import verticaltreadmillrun.composeapp.generated.resources.summary_title
+import verticaltreadmillrun.composeapp.generated.resources.summary_total_distance
+import verticaltreadmillrun.composeapp.generated.resources.summary_total_duration
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clipboard
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_clock
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_route
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_speedometer
 
 @Composable
 internal fun ManualSummaryCard(state: WorkoutPlannerState) {

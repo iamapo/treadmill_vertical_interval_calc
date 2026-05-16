@@ -54,7 +54,7 @@ data class WorkoutPlan(
             line
         }
 
-        return "VertiRun Workout - $totalDurationMinutes min / ca. ${targetElevationMeters.roundToInt()} Hm\n\n" +
+        return "VerticalTreadmillRun Workout - $totalDurationMinutes min / ca. ${targetElevationMeters.roundToInt()} Hm\n\n" +
             rows +
             "\n\nTotal: ca. ${plannedElevationMeters.roundToInt()} Hm"
     }

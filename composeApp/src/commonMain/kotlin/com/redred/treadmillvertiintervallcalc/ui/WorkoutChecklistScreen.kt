@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.model.WorkoutPlan
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.button_copy_workout_text
-import vertirun.composeapp.generated.resources.button_reset_checklist
-import vertirun.composeapp.generated.resources.vr_ic_copy
-import vertirun.composeapp.generated.resources.vr_ic_trash
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.button_copy_workout_text
+import verticaltreadmillrun.composeapp.generated.resources.button_reset_checklist
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_copy
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_trash
 
 @Composable
 fun WorkoutChecklistScreen(

@@ -16,11 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.redred.treadmillvertiintervallcalc.presentation.PlanningMode
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.mode_auto
-import vertirun.composeapp.generated.resources.mode_manual
-import vertirun.composeapp.generated.resources.vr_ic_pencil
-import vertirun.composeapp.generated.resources.vr_ic_spark
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.mode_auto
+import verticaltreadmillrun.composeapp.generated.resources.mode_manual
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_pencil
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_spark
 
 @Composable
 internal fun ModeSegmentedControl(

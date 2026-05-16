@@ -6,15 +6,15 @@ import androidx.compose.runtime.Composable
 import com.redred.treadmillvertiintervallcalc.presentation.ManualSegmentType
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
-import vertirun.composeapp.generated.resources.Res
-import vertirun.composeapp.generated.resources.manual_type_cooldown
-import vertirun.composeapp.generated.resources.manual_type_repetition
-import vertirun.composeapp.generated.resources.manual_type_single
-import vertirun.composeapp.generated.resources.manual_type_warmup
-import vertirun.composeapp.generated.resources.vr_ic_flame
-import vertirun.composeapp.generated.resources.vr_ic_mountain
-import vertirun.composeapp.generated.resources.vr_ic_repeat
-import vertirun.composeapp.generated.resources.vr_ic_snowflake
+import verticaltreadmillrun.composeapp.generated.resources.Res
+import verticaltreadmillrun.composeapp.generated.resources.manual_type_cooldown
+import verticaltreadmillrun.composeapp.generated.resources.manual_type_repetition
+import verticaltreadmillrun.composeapp.generated.resources.manual_type_single
+import verticaltreadmillrun.composeapp.generated.resources.manual_type_warmup
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_flame
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_mountain
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_repeat
+import verticaltreadmillrun.composeapp.generated.resources.vr_ic_snowflake
 
 @Composable
 internal fun manualSegmentTypeLabel(type: ManualSegmentType): String =

@@ -4,7 +4,9 @@ import com.redred.treadmillvertiintervallcalc.ui.components.*
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +42,8 @@ fun WorkoutPlannerScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
                 .padding(8.dp)
         ) {
             PlannerHeader(selectedScreen = state.selectedScreen)
@@ -47,12 +51,6 @@ fun WorkoutPlannerScreen(
                 when (state.selectedScreen) {
                         PlannerScreen.INPUT -> WorkoutInputScreen(
                             state = state,
-                            onInputChanged = { field, value ->
-                                viewModel.onEvent(WorkoutPlannerEvent.InputChanged(field, value))
-                            },
-                            onSelectPlanningMode = {
-                                viewModel.onEvent(WorkoutPlannerEvent.SelectPlanningMode(it))
-                            },
                             onManualSegmentDurationChanged = { segmentId, value ->
                                 viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentDurationChanged(segmentId, value))
                             },
@@ -73,9 +71,6 @@ fun WorkoutPlannerScreen(
                             },
                             onManualSegmentRecoveryInclineChanged = { segmentId, value ->
                                 viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentRecoveryInclineChanged(segmentId, value))
-                            },
-                            onManualSegmentTypeChanged = { segmentId, type ->
-                                viewModel.onEvent(WorkoutPlannerEvent.ManualSegmentTypeChanged(segmentId, type))
                             },
                             onToggleAddManualSegmentTypePicker = {
                                 viewModel.onEvent(WorkoutPlannerEvent.ToggleAddManualSegmentTypePicker)
